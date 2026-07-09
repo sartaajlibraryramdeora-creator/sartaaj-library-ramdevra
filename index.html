@@ -1,78 +1,70 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <base target="_top">
+<title>Sartaaj Library</title>
 
-  <style>
-    body{
-      margin:0;
-      padding:0;
-      font-family:Arial, sans-serif;
-      background:#f2f5f9;
-    }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .container{
-      width:90%;
-      max-width:500px;
-      margin:30px auto;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f2f2f2;
+}
 
-    .card{
-      background:white;
-      padding:25px;
-      border-radius:15px;
-      box-shadow:0 4px 15px rgba(0,0,0,0.1);
-    }
+.container{
+  max-width:450px;
+  margin:30px auto;
+  padding:20px;
+}
 
-    h1{
-      text-align:center;
-      color:#1a237e;
-    }
+.card{
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  box-shadow:0 0 10px #ccc;
+}
 
-    .sub{
-      text-align:center;
-      color:#666;
-    }
+h1{
+  text-align:center;
+  color:#1a237e;
+}
 
-    label{
-      display:block;
-      margin-top:15px;
-      font-weight:bold;
-    }
+p{
+  text-align:center;
+}
 
-    input,select{
-      width:100%;
-      padding:12px;
-      margin-top:5px;
-      border:1px solid #ccc;
-      border-radius:8px;
-      box-sizing:border-box;
-    }
+input,select{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  box-sizing:border-box;
+}
 
-    button{
-      width:100%;
-      padding:13px;
-      margin-top:20px;
-      background:#1a73e8;
-      color:white;
-      border:none;
-      border-radius:8px;
-      font-size:16px;
-      cursor:pointer;
-    }
+button{
+  width:100%;
+  padding:14px;
+  margin-top:20px;
+  background:#1565c0;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-size:18px;
+}
 
-    button:hover{
-      background:#0d47a1;
-    }
+button:active{
+  background:#0d47a1;
+}
 
-    #msg{
-      margin-top:15px;
-      text-align:center;
-      font-weight:bold;
-    }
+#message{
+  text-align:center;
+  margin-top:15px;
+  font-weight:bold;
+}
 
-  </style>
+</style>
 
 </head>
 
@@ -84,20 +76,14 @@
 
 <h1>📚 Sartaaj Library</h1>
 
-<p class="sub">Seat Booking System</p>
+<p>Seat Booking System</p>
 
+<input type="text" id="name" placeholder="Student Name">
 
-<label>Student Name</label>
-<input type="text" id="name" placeholder="अपना नाम लिखें">
+<input type="number" id="mobile" placeholder="Mobile Number">
 
-
-<label>Mobile Number</label>
-<input type="number" id="mobile" placeholder="मोबाइल नंबर लिखें">
-
-
-<label>Select Seat</label>
 <select id="seat">
-<option value="">Seat चुनें</option>
+<option value="">Select Seat</option>
 <option>Seat 1</option>
 <option>Seat 2</option>
 <option>Seat 3</option>
@@ -108,13 +94,46 @@
 <option>Seat 8</option>
 </select>
 
+<button onclick="bookNow()">
+Book Now
+</button>
 
-<button onclick="bookSeat()">Book Seat</button>
+<div id="message"></div><script>
+
+function bookNow(){
+
+let name = document.getElementById("name").value;
+let mobile = document.getElementById("mobile").value;
+let seat = document.getElementById("seat").value;
 
 
-<div id="msg"></div>
+if(name=="" || mobile=="" || seat==""){
+document.getElementById("message").innerHTML="⚠️ Please fill all details";
+return;
+}
+
+
+document.getElementById("message").innerHTML=
+"✅ Seat booking request received";
+
+
+alert(
+"Booking Successful\n\nName: "+name+
+"\nMobile: "+mobile+
+"\nSeat: "+seat
+);
+
+
+}
+
+
+</script>
 
 
 </div>
 
 </div>
+
+
+</body>
+</html>
