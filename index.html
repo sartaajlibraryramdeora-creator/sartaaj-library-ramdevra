@@ -1,117 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sartaaj Library Ramdevra</title>
+  <base target="_top">
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+  <style>
+    body{
+      margin:0;
+      padding:0;
+      font-family:Arial, sans-serif;
+      background:#f2f5f9;
+    }
 
-body{
-background:#f5f5f5;
-}
+    .container{
+      width:90%;
+      max-width:500px;
+      margin:30px auto;
+    }
 
-header{
-background:#0d6efd;
-color:#fff;
-padding:20px;
-text-align:center;
-}
+    .card{
+      background:white;
+      padding:25px;
+      border-radius:15px;
+      box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    }
 
-.hero{
-padding:60px 20px;
-text-align:center;
-}
+    h1{
+      text-align:center;
+      color:#1a237e;
+    }
 
-.hero h1{
-font-size:40px;
-margin-bottom:15px;
-}
+    .sub{
+      text-align:center;
+      color:#666;
+    }
 
-.hero p{
-font-size:20px;
-margin-bottom:20px;
-}
+    label{
+      display:block;
+      margin-top:15px;
+      font-weight:bold;
+    }
 
-.btn{
-display:inline-block;
-background:#198754;
-color:white;
-padding:15px 35px;
-border-radius:8px;
-text-decoration:none;
-font-size:18px;
-}
+    input,select{
+      width:100%;
+      padding:12px;
+      margin-top:5px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      box-sizing:border-box;
+    }
 
-.card{
-max-width:900px;
-margin:40px auto;
-background:white;
-padding:30px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,.15);
-}
+    button{
+      width:100%;
+      padding:13px;
+      margin-top:20px;
+      background:#1a73e8;
+      color:white;
+      border:none;
+      border-radius:8px;
+      font-size:16px;
+      cursor:pointer;
+    }
 
-.card h2{
-margin-bottom:20px;
-}
+    button:hover{
+      background:#0d47a1;
+    }
 
-.card p{
-font-size:18px;
-margin:10px 0;
-}
+    #msg{
+      margin-top:15px;
+      text-align:center;
+      font-weight:bold;
+    }
 
-footer{
-background:#111;
-color:white;
-text-align:center;
-padding:20px;
-margin-top:40px;
-}
-</style>
+  </style>
 
 </head>
 
 <body>
 
-<header>
-<h1>Sartaaj Library</h1>
-<p>Ramdevra, Rajasthan</p>
-</header>
-
-<section class="hero">
-
-<h1>Welcome to Sartaaj Library</h1>
-
-<p>Peaceful Study Environment For Students</p>
-
-<a class="btn" href="#">Book Seat</a>
-
-</section>
+<div class="container">
 
 <div class="card">
 
-<h2>Library Details</h2>
+<h1>📚 Sartaaj Library</h1>
 
-<p><b>Fee:</b> ₹800 / 30 Days</p>
+<p class="sub">Seat Booking System</p>
 
-<p><b>Address:</b> Near Ramsarovar Lake, Pokaran Road, Ramdevra</p>
 
-<p><b>Phone:</b> 8905131434</p>
+<label>Student Name</label>
+<input type="text" id="name" placeholder="अपना नाम लिखें">
+
+
+<label>Mobile Number</label>
+<input type="number" id="mobile" placeholder="मोबाइल नंबर लिखें">
+
+
+<label>Select Seat</label>
+<select id="seat">
+<option value="">Seat चुनें</option>
+<option>Seat 1</option>
+<option>Seat 2</option>
+<option>Seat 3</option>
+<option>Seat 4</option>
+<option>Seat 5</option>
+<option>Seat 6</option>
+<option>Seat 7</option>
+<option>Seat 8</option>
+</select>
+
+
+<button onclick="bookSeat()">Book Seat</button>
+
+
+<div id="msg"></div>
+<script>
+
+function bookSeat(){
+
+var name = document.getElementById("name").value;
+var mobile = document.getElementById("mobile").value;
+var seat = document.getElementById("seat").value;
+
+
+if(name=="" || mobile=="" || seat==""){
+document.getElementById("msg").innerHTML="⚠️ सभी जानकारी भरें";
+return;
+}
+
+
+document.getElementById("msg").innerHTML="⏳ Booking हो रही है...";
+
+
+google.script.run
+.withSuccessHandler(function(response){
+
+document.getElementById("msg").innerHTML=response;
+
+document.getElementById("name").value="";
+document.getElementById("mobile").value="";
+document.getElementById("seat").value="";
+
+})
+.saveBooking(name,mobile,seat);
+
+
+}
+
+
+
+</script>
+</body>
+
+</html>
 
 </div>
 
-<footer>
-
-© 2026 Sartaaj Library Ramdevra
-
-</footer>
-
-</body>
-</html>
+</div>
