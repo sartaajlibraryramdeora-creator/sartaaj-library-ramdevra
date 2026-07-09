@@ -2,85 +2,58 @@
 <html>
 <head>
 
-<title>Sartaaj Library Seat Booking</title>
+<title>Sartaaj Library</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
 body{
-  margin:0;
-  padding:0;
-  font-family:Arial,sans-serif;
-  background:#eef2f7;
+margin:0;
+font-family:Arial;
+background:#f1f5f9;
 }
 
-.container{
-  max-width:450px;
-  margin:30px auto;
-  padding:15px;
+.box{
+max-width:450px;
+margin:30px auto;
+padding:20px;
 }
 
 .card{
-  background:white;
-  padding:25px;
-  border-radius:15px;
-  box-shadow:0 5px 15px #ccc;
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 3px 10px #ccc;
 }
 
 h1{
-  text-align:center;
-  color:#123c8c;
-}
-
-p{
-  text-align:center;
-  color:#555;
+text-align:center;
+color:#0d47a1;
 }
 
 input,select{
-  width:100%;
-  padding:12px;
-  margin-top:12px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  box-sizing:border-box;
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ccc;
 }
 
 button{
-  width:100%;
-  padding:14px;
-  margin-top:20px;
-  background:#1565c0;
-  color:white;
-  border:0;
-  border-radius:8px;
-  font-size:18px;
-  cursor:pointer;
+width:100%;
+padding:14px;
+background:#1565c0;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
 }
 
-button:hover{
-  background:#0d47a1;
-}
-
-#msg{
-  text-align:center;
-  margin-top:15px;
-  font-weight:bold;
-}
-
-.seats{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:20px;
-}
-
-.seat{
-  background:#ddd;
-  padding:10px;
-  text-align:center;
-  border-radius:8px;
+#result{
+text-align:center;
+margin-top:15px;
+font-weight:bold;
 }
 
 </style>
@@ -91,14 +64,15 @@ button:hover{
 <body>
 
 
-<div class="container">
+<div class="box">
 
 <div class="card">
 
-
 <h1>📚 Sartaaj Library</h1>
 
-<p>Online Seat Booking System</p>
+<p style="text-align:center">
+Online Seat Booking
+</p>
 
 
 <input id="name" type="text" placeholder="Student Name">
@@ -110,7 +84,6 @@ button:hover{
 <select id="seat">
 
 <option value="">Select Seat</option>
-
 <option>Seat 1</option>
 <option>Seat 2</option>
 <option>Seat 3</option>
@@ -131,12 +104,12 @@ button:hover{
 </select>
 
 
-<button onclick="bookNow()">
+<button type="button" onclick="bookNow()">
 Book Now
 </button>
 
 
-<div id="msg"></div>
+<div id="result"></div>
 
 
 </div>
@@ -149,26 +122,27 @@ Book Now
 
 function bookNow(){
 
-let name=document.getElementById("name").value;
-let mobile=document.getElementById("mobile").value;
-let seat=document.getElementById("seat").value;
+var name=document.getElementById("name").value;
+var mobile=document.getElementById("mobile").value;
+var seat=document.getElementById("seat").value;
 
 
 if(name=="" || mobile=="" || seat==""){
 
-document.getElementById("msg").innerHTML="⚠️ Please fill all details";
+document.getElementById("result").innerHTML=
+"⚠️ Please fill all details";
 
 return;
 
 }
 
 
-document.getElementById("msg").innerHTML=
-"✅ Seat Booked Successfully";
+document.getElementById("result").innerHTML=
+"✅ Booking Successful";
 
 
 alert(
-"Booking Details\n\n"+
+"Seat Booking Details\n\n"+
 "Name: "+name+
 "\nMobile: "+mobile+
 "\nSeat: "+seat
@@ -177,10 +151,8 @@ alert(
 
 }
 
-
 </script>
 
 
 </body>
-
 </html>
