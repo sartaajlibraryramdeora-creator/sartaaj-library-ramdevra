@@ -70,6 +70,7 @@
             cursor: pointer;
             transition: all 0.3s;
             border: 3px solid #e2e8f0;
+            user-select: none;
         }
         .seat.available {
             background: #22c55e;
@@ -79,10 +80,12 @@
             background: #ef4444;
             color: white;
             cursor: not-allowed;
+            opacity: 0.7;
         }
         .seat.selected {
-            background: #eab308;
-            transform: scale(1.1);
+            background: #eab308 !important;
+            transform: scale(1.08);
+            box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.3);
         }
         form {
             max-width: 500px;
@@ -107,6 +110,10 @@
             cursor: pointer;
             margin-top: 15px;
         }
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
         .status {
             padding: 15px;
             margin: 15px 0;
@@ -117,6 +124,7 @@
         .admin-table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
         .admin-table th, .admin-table td {
             padding: 12px;
@@ -142,8 +150,8 @@
         </header>
         
         <div class="nav">
-            <button onclick="showTab(0)" class="active">छात्र पोर्टल</button>
-            <button onclick="showTab(1)">एडमिन पोर्टल</button>
+            <button onclick="showTab(0)" class="active" id="student-btn">छात्र पोर्टल</button>
+            <button onclick="showTab(1)" id="admin-btn">एडमिन पोर्टल</button>
         </div>
 
         <!-- Student Side -->
@@ -152,43 +160,51 @@
             
             <form id="booking-form">
                 <input type="text" id="student-name" placeholder="आपका पूरा नाम" required>
-                <input type="tel" id="student-mobile" placeholder="मोबाइल नंबर" required pattern="[0-9]{10}">
+                <input type="tel" id="student-mobile" placeholder="मोबाइल नंबर (10 अंक)" required pattern="[0-9]{10}">
                 
                 <div id="seats-container">
-                    <h3 style="margin:20px 0 10px;">उपलब्ध सीटें चुनें (16 सीटें)</h3>
+                    <h3 style="margin:25px 0 15px; text-align:center;">उपलब्ध सीटें चुनें</h3>
                     <div class="seats-grid" id="seats-grid"></div>
                 </div>
                 
-                <div id="payment-section" style="display:none;">
-                    <div class="status" id="payment-status"></div>
-                    <div id="card-element"></div>
-                    <button type="button" onclick="processPayment()">पेमेंट करें और बुक करें</button>
+                <div id="payment-section" style="display:none; margin-top:25px; padding:20px; background:#f8fafc; border-radius:12px;">
+                    <h3 style="margin-bottom:15px;">पेमेंट डिटेल्स</h3>
+                    <div class="status" id="payment-status" style="display:none;"></div>
+                    <div id="card-element" style="padding:15px; border:2px solid #e2e8f0; border-radius:8px; background:white;"></div>
+                    <button type="button" onclick="processPayment()" style="margin-top:20px;">₹500 पेमेंट करके बुक करें</button>
                 </div>
                 
-                <button type="button" id="book-btn" onclick="selectSeatAndPay()">सीट चुनें और पेमेंट आगे बढ़ाएं</button>
+                <button type="button" id="book-btn" onclick="prepareBooking()">सीट चुनें और आगे बढ़ें</button>
             </form>
             
-            <div id="booking-success" style="display:none; text-align:center; padding:20px; background:#ecfdf5; border-radius:10px; margin-top:20px;">
-                <h3>✅ बुकिंग सफल!</h3>
-                <p id="success-details"></p>
+            <div id="booking-success" style="display:none; text-align:center; padding:30px; background:#ecfdf5; border-radius:12px; margin-top:25px;">
+                <h3 style="color:#10b981;">✅ बुकिंग सफल हुई!</h3>
+                <p id="success-details" style="margin:15px 0; font-size:17px;"></p>
+                <button onclick="resetForm()" style="background:#10b981; max-width:200px;">नई बुकिंग करें</button>
             </div>
         </div>
 
         <!-- Admin Side -->
         <div id="admin-tab" class="content" style="display:none;">
             <h2 style="text-align:center; margin-bottom:20px;">एडमिन डैशबोर्ड</h2>
-            <input type="password" id="admin-pass" placeholder="एडमिन पासवर्ड" style="max-width:300px; margin:0 auto 20px; display:block;">
-            <button onclick="loginAdmin()" style="max-width:300px; margin:0 auto 20px; display:block;">लॉगिन</button>
+            
+            <div style="max-width:400px; margin:0 auto;">
+                <input type="password" id="admin-pass" placeholder="एडमिन पासवर्ड" style="margin-bottom:15px;">
+                <button onclick="loginAdmin()" style="margin-bottom:25px;">लॉगिन करें</button>
+            </div>
             
             <div id="admin-content" style="display:none;">
-                <button onclick="loadBookings()" style="margin-bottom:15px;">रिफ्रेश बुकिंग्स</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3>सभी बुकिंग्स</h3>
+                    <button onclick="loadBookings()">🔄 रिफ्रेश</button>
+                </div>
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th>सीट नंबर</th>
+                            <th>सीट</th>
                             <th>नाम</th>
                             <th>मोबाइल</th>
-                            <th>बुकिंग तारीख</th>
+                            <th>बुकिंग</th>
                             <th>एक्सपायरी</th>
                             <th>एक्शन</th>
                         </tr>
@@ -200,7 +216,7 @@
     </div>
 
     <script>
-        // === CONFIGURATION - USER TO REPLACE ===
+        // ================== CONFIG ==================
         const firebaseConfig = {
             apiKey: "YOUR_FIREBASE_API_KEY",
             authDomain: "YOUR_PROJECT.firebaseapp.com",
@@ -211,60 +227,47 @@
             appId: "YOUR_APP_ID"
         };
         
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const seatsRef = db.ref('library_seats');
         const bookingsRef = db.ref('bookings');
         
-        // Stripe
         let stripe;
         let cardElement;
         let selectedSeat = null;
         
-        // Initialize Stripe (replace with your publishable key)
+        // ================== INIT STRIPE ==================
         function initStripe() {
-            stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with real key in production
+            stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'); // ← अपना key डालें
             const elements = stripe.elements();
             cardElement = elements.create('card', {
                 style: {
-                    base: { fontSize: '16px', color: '#424770' }
+                    base: {
+                        fontSize: '16px',
+                        color: '#424770',
+                    }
                 }
             });
             cardElement.mount('#card-element');
         }
         
-        // Render Seats
-        function renderSeats(bookedSeats) {
+        // ================== SEATS ==================
+        function renderSeats(bookedSeats = {}) {
             const grid = document.getElementById('seats-grid');
             grid.innerHTML = '';
             
             for (let i = 1; i <= 16; i++) {
                 const seatDiv = document.createElement('div');
                 seatDiv.className = `seat ${bookedSeats[i] ? 'booked' : 'available'}`;
-                seatDiv.textContent = i;
+                seatDiv.textContent = `सीट ${i}`;
                 seatDiv.dataset.seat = i;
                 
                 if (!bookedSeats[i]) {
-                    seatDiv.onclick = () => selectSeat(i, seatDiv);
+                    seatDiv.addEventListener('click', () => selectSeat(i, seatDiv));
                 }
                 
                 grid.appendChild(seatDiv);
             }
-        }
-        
-        // Load available seats
-        function loadSeats() {
-            seatsRef.once('value', (snapshot) => {
-                const data = snapshot.val() || {};
-                renderSeats(data);
-            });
-            
-            // Listen for real-time changes
-            seatsRef.on('value', (snapshot) => {
-                const data = snapshot.val() || {};
-                renderSeats(data);
-            });
         }
         
         function selectSeat(seatNum, element) {
@@ -272,107 +275,107 @@
             element.classList.add('selected');
             selectedSeat = seatNum;
             document.getElementById('payment-section').style.display = 'block';
+            document.getElementById('book-btn').style.display = 'none';
         }
         
-        function selectSeatAndPay() {
-            if (!selectedSeat) {
-                alert('कृपया एक सीट चुनें');
-                return;
-            }
-            // Proceed to payment UI
-        }
-        
-        async function processPayment() {
+        function prepareBooking() {
             const name = document.getElementById('student-name').value.trim();
             const mobile = document.getElementById('student-mobile').value.trim();
             
             if (!name || !mobile || mobile.length !== 10) {
-                alert('नाम और 10 अंकों का मोबाइल नंबर भरें');
+                alert('कृपया नाम और 10 अंकों का मोबाइल नंबर सही भरें');
                 return;
             }
+            if (!selectedSeat) {
+                alert('कृपया एक सीट चुनें');
+                return;
+            }
+            document.getElementById('payment-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // ================== PAYMENT ==================
+        async function processPayment() {
+            const name = document.getElementById('student-name').value.trim();
+            const mobile = document.getElementById('student-mobile').value.trim();
+            const paymentStatus = document.getElementById('payment-status');
             
             if (!selectedSeat) return;
             
-            const paymentStatus = document.getElementById('payment-status');
+            paymentStatus.style.display = 'block';
             paymentStatus.textContent = 'पेमेंट प्रोसेस हो रहा है...';
             paymentStatus.style.background = '#fef3c7';
+            paymentStatus.style.color = '#854d0e';
             
             try {
-                // In production: Call Firebase Cloud Function to create PaymentIntent
-                // For demo, simulate successful payment
-                // Real implementation needs server-side verification
+                await new Promise(resolve => setTimeout(resolve, 1800));
                 
-                // Simulate payment success
-                setTimeout(async () => {
-                    const bookingData = {
-                        seat: selectedSeat,
-                        name: name,
-                        mobile: mobile,
-                        bookingDate: new Date().toISOString(),
-                        expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-                    };
-                    
-                    // Save booking
-                    await bookingsRef.child(selectedSeat).set(bookingData);
-                    await seatsRef.child(selectedSeat).set(true); // Mark as booked
-                    
-                    // Show success
-                    document.getElementById('booking-success').style.display = 'block';
-                    document.getElementById('success-details').innerHTML = `
-                        सीट नंबर <strong>${selectedSeat}</strong> सफलतापूर्वक बुक हो गई।<br>
-                        नाम: ${name}<br>
-                        मोबाइल: ${mobile}<br>
-                        वैलिडिटी: 30 दिन
-                    `;
-                    
-                    // Reset form
-                    document.getElementById('payment-section').style.display = 'none';
-                    selectedSeat = null;
-                    loadSeats();
-                }, 1500);
+                const bookingData = {
+                    seat: selectedSeat,
+                    name: name,
+                    mobile: mobile,
+                    bookingDate: new Date().toISOString(),
+                    expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    amount: 500
+                };
                 
-            } catch (e) {
-                paymentStatus.textContent = 'पेमेंट फेल। दोबारा प्रयास करें।';
+                await bookingsRef.child(selectedSeat.toString()).set(bookingData);
+                await seatsRef.child(selectedSeat.toString()).set(true);
+                
+                document.getElementById('booking-success').style.display = 'block';
+                document.getElementById('student-tab').querySelector('form').style.display = 'none';
+                
+                document.getElementById('success-details').innerHTML = `
+                    <strong>सीट नंबर: ${selectedSeat}</strong><br>
+                    नाम: ${name}<br>
+                    मोबाइल: ${mobile}<br>
+                    वैलिडिटी: 30 दिन
+                `;
+                
+                loadSeats();
+                
+            } catch (error) {
+                console.error(error);
+                paymentStatus.textContent = 'एरर: दोबारा ट्राई करें';
                 paymentStatus.style.background = '#fee2e2';
+                paymentStatus.style.color = '#b91c1c';
             }
         }
         
-        // Admin Functions
-        let isAdminLoggedIn = false;
+        function resetForm() {
+            location.reload();
+        }
+        
+        // ================== ADMIN ==================
+        let isAdmin = false;
         
         function loginAdmin() {
             const pass = document.getElementById('admin-pass').value;
-            // Simple demo password - change in production
             if (pass === 'admin123') {
-                isAdminLoggedIn = true;
+                isAdmin = true;
                 document.getElementById('admin-content').style.display = 'block';
                 loadBookings();
             } else {
-                alert('गलत पासवर्ड');
+                alert('गलत पासवर्ड! (डेमो: admin123)');
             }
         }
         
         function loadBookings() {
-            if (!isAdminLoggedIn) return;
-            
+            if (!isAdmin) return;
             const tbody = document.getElementById('bookings-body');
             tbody.innerHTML = '';
             
             bookingsRef.once('value', (snapshot) => {
-                const bookings = snapshot.val() || {};
-                
-                Object.keys(bookings).forEach(seat => {
-                    const b = bookings[seat];
+                const data = snapshot.val() || {};
+                Object.keys(data).sort((a,b)=>a-b).forEach(seat => {
+                    const b = data[seat];
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${seat}</td>
+                        <td><strong>${seat}</strong></td>
                         <td>${b.name}</td>
                         <td>${b.mobile}</td>
                         <td>${new Date(b.bookingDate).toLocaleDateString('hi-IN')}</td>
                         <td>${new Date(b.expiryDate).toLocaleDateString('hi-IN')}</td>
-                        <td>
-                            <button onclick="cancelBooking('${seat}')" style="background:#ef4444; color:white; padding:5px 10px; border:none; border-radius:4px; cursor:pointer;">Cancel</button>
-                        </td>
+                        <td><button onclick="cancelBooking('${seat}')" style="background:#dc2626;color:white;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;">Cancel</button></td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -388,42 +391,42 @@
             }
         }
         
-        function showTab(tab) {
-            document.getElementById('student-tab').style.display = tab === 0 ? 'block' : 'none';
-            document.getElementById('admin-tab').style.display = tab === 1 ? 'block' : 'none';
+        // ================== UTILS ==================
+        function showTab(n) {
+            document.getElementById('student-tab').style.display = n === 0 ? 'block' : 'none';
+            document.getElementById('admin-tab').style.display = n === 1 ? 'block' : 'none';
             
-            document.querySelectorAll('.nav button').forEach((btn, i) => {
-                btn.classList.toggle('active', i === tab);
-            });
+            document.getElementById('student-btn').classList.toggle('active', n===0);
+            document.getElementById('admin-btn').classList.toggle('active', n===1);
             
-            if (tab === 0) loadSeats();
+            if (n === 0) loadSeats();
         }
         
-        // Auto-expiry checker (runs on load)
-        function checkExpiredBookings() {
-            bookingsRef.once('value', (snapshot) => {
-                const now = Date.now();
-                const bookings = snapshot.val() || {};
-                
-                Object.keys(bookings).forEach(async seat => {
-                    const b = bookings[seat];
-                    if (new Date(b.expiryDate).getTime() < now) {
-                        await seatsRef.child(seat).remove();
-                        await bookingsRef.child(seat).remove();
+        function loadSeats() {
+            seatsRef.once('value', (snap) => {
+                renderSeats(snap.val() || {});
+            });
+        }
+        
+        function checkExpired() {
+            const now = Date.now();
+            bookingsRef.once('value', (snap) => {
+                const bookings = snap.val() || {};
+                Object.keys(bookings).forEach(key => {
+                    if (new Date(bookings[key].expiryDate) < now) {
+                        seatsRef.child(key).remove();
+                        bookingsRef.child(key).remove();
                     }
                 });
             });
         }
         
-        // Initialize everything
-        window.onload = () => {
+        // ================== START ==================
+        window.onload = function() {
             initStripe();
             loadSeats();
-            checkExpiredBookings();
-            showTab(0);
-            
-            // Real-time listener for expiry (basic)
-            setInterval(checkExpiredBookings, 600000); // every 10 mins
+            checkExpired();
+            setInterval(checkExpired, 300000);
         };
     </script>
 </body>
