@@ -578,7 +578,7 @@
                         class="flex-1 py-3 text-slate-700 font-medium border border-slate-300 rounded-2xl hover:bg-white">रद्द करें</button>
                 <button onclick="processPayment()" id="pay-button"
                         class="flex-1 py-3 bg-[#0f172a] hover:bg-black transition-colors text-white font-semibold rounded-2xl flex items-center justify-center gap-x-2">
-                    <span>₹999 का भुगतान करें</span>
+                    <span>₹800 का भुगतान करें</span>
                 </button>
             </div>
         </div>
@@ -1566,7 +1566,7 @@ function getSeatPrice(seatNum) {
                 bookings["3"] = {
                     name: "प्रिया वर्मा", fatherName: "सुरेश वर्मा", mobile: "9876543210",
                     address: "42, गांधी नगर, जोधपुर", bookedAt: Date.now() - 86400000*5,
-                    expiresAt: Date.now() + 86400000*25, amountPaid: 999, paymentRef: "STRIPE_SIM_98765432"
+                    expiresAt: Date.now() + 86400000*25, amountPaid: 800, paymentRef: "STRIPE_SIM_98765432"
                 };
                 localStorage.setItem('sartaajBookings', JSON.stringify(bookings));
                 location.reload();
