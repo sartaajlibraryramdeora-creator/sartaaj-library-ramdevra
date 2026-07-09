@@ -593,7 +593,12 @@
 
     <script>
         // ==================== CONFIG ====================
-        const SEAT_PRICE = 999;
+        const DEFAULT_PRICE = 800;
+const SPECIAL_SEATS = [5, 13];
+
+function getSeatPrice(seatNum) {
+    return SPECIAL_SEATS.includes(seatNum) ? 600 : DEFAULT_PRICE;
+}
         const BOOKING_DURATION_DAYS = 30;
         const ADMIN_PASSWORD = "sartaaj2026";
         const TOTAL_SEATS = 16;
