@@ -113,45 +113,7 @@
 
 
 <div id="msg"></div>
-<script>
 
-function bookSeat(){
-
-var name = document.getElementById("name").value;
-var mobile = document.getElementById("mobile").value;
-var seat = document.getElementById("seat").value;
-
-
-if(name=="" || mobile=="" || seat==""){
-document.getElementById("msg").innerHTML="⚠️ सभी जानकारी भरें";
-return;
-}
-
-
-document.getElementById("msg").innerHTML="⏳ Booking हो रही है...";
-
-
-google.script.run
-.withSuccessHandler(function(response){
-
-document.getElementById("msg").innerHTML=response;
-
-document.getElementById("name").value="";
-document.getElementById("mobile").value="";
-document.getElementById("seat").value="";
-
-})
-.saveBooking(name,mobile,seat);
-
-
-}
-
-
-
-</script>
-</body>
-
-</html>
 
 </div>
 
